@@ -1,0 +1,16 @@
+public/bundle.js
+public/0.*
+public/*.hot-update.json
+node_modules/
+.eslintcache
+coverage/
+.nyc_output
+.DS_Store
+public/*bundle*
+*.map
+*.bundle.js
+_site/
+.sass-cache/
+yarn-error.log
+*.iml
+.idea/

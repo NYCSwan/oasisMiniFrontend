@@ -1,0 +1,419 @@
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+/* Header Styles */
+/*****************/
+    .navItem {
+        width:64px;
+        height:auto;
+    }
+    img {
+        width:64px;
+        height:auto;
+    }
+    .logo {
+      display: none;
+    }
+    div.backImage {
+      display: inline-block;
+      position: relative;
+      background-image: url(/public/img/white_back_button.png);
+      background-repeat:no-repeat;
+      background-size: 100% 100%;
+      z-index: 1;
+      width: 90px;
+      height: 75px;
+    }
+
+    ul.pager {
+      visibility: hidden;
+    }
+
+    li.previous {
+      visibility: hidden;
+      z-index: 200;
+      bottom: 0;
+    }
+
+    .headerLinks {
+      width: 30px;
+    }
+
+    .title.Futura-Lig {
+        font-size: 24px;
+    }
+    button.navbar-toggle.collapsed {
+      margin-top: 15px;
+    }
+    /* Filter Nav By Chamber */
+    /*************************/
+    div.filterById.filter.flex-row.row.btn-group.btn-group-justified {
+      width: 100%;
+      padding:0;
+
+    }
+    button.chamber-1.btn.btn-default, button.chamber-2.btn.btn-default, button.chamber-3.btn.btn-default {
+      padding: 0;
+      width: auto;
+      align-self: baseline;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    button.chamber-2.btn.btn-default {
+      border-left: 2px solid #fff;
+      border-right: 2px solid #fff;
+    }
+    /*New Grow*/
+    /***********/
+    .selectedPlant h3 {
+      font-family: Futura-Lig;
+      font-size: 14px;
+    }
+
+    .Basil, .Bell.Pepper, .Broccoli, .Cilantro, .Green.Beans, .Lettuce, .Tomato, .Kale, .Temperate.link, .Customize.link {
+      font-family: Futura-Lig;
+      background-repeat:no-repeat;
+      background-size: 100% 100%;
+      max-width: 20%;
+      min-width: 100px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .monitorOrGrow.container, .grow.links.container {
+        min-width: 375px;
+        margin: 0;
+    }
+
+    div.directions.container {
+        margin-left: 0;
+        margin-right: 0;
+        display: flex;
+        align-items: flex-start;
+    }
+    div.directions.right {
+        width: 100%;
+        /*float: right;*/
+    }
+
+    div.directions.left {
+      font-size: 18px;
+
+    }
+    .check_mark {
+        width: 50px;
+        height: auto;
+    }
+}
+
+/* Monitor Page */
+.bubble.temperature {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+}
+
+.bubble.ph, .bubble.ppm, .bubble.dayOfCycle {
+    padding: 10px;
+    width: 10px;
+    height: 10px;
+    position: fixed;
+}
+.bubble.empty.small {
+  padding: 10px;
+  width: 2px;
+  height: 2px;
+  position: absolute;
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen
+and (min-width : 321px) {
+/* Styles */
+    navItem {
+        width:64px;
+        height:auto;
+        inline-style:none;
+    }
+    img {
+        /* width:64px; */
+        height:auto;
+    }
+    .backImage {
+      display: inline;
+    }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen
+and (max-width : 320px) {
+/* Styles */
+
+/* Filter Nav By Chamber */
+/*************************/
+div.filter.row {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.filterById {
+  max-width: 150px;
+}
+button.btn.btn-default {
+  padding: 10px;
+}
+.chamber1, .chamber2, .chamber3 {
+  padding: 5px;
+}
+}
+
+/* ----------- iPhone 4 and 4S ----------- */
+
+/* Portrait and Landscape */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .backImage {
+      display: inline;
+    }
+}
+
+/* Portrait */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    .backImage {
+      display: inline;
+    }
+    /* Filter Nav By Chamber */
+    /*************************/
+    div.filter.row {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
+    .filterById {
+      /* max-width: 150px; */
+    }
+
+    button.btn.btn-default {
+      padding: 10px;
+    }
+
+    .chamber1, .chamber2, .chamber3 {
+      padding: 5px;
+    }
+}
+
+/* Landscape */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+    .backImage {
+      display: inline;
+    }
+
+}
+
+/* ----------- iPhone 5, 5S, 5C and 5SE ----------- */
+
+/* Portrait and Landscape */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .backImage {
+      display: inline;
+    }
+}
+
+/* Portrait */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    .backImage {
+      display: inline;
+    }
+    /* Filter Nav By Chamber */
+    /*************************/
+    div.filter.row {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+    .filterById {
+      /* max-width: 150px; */
+    }
+    button.btn.btn-default {
+      padding: 10px;
+    }
+    .chamber1, .chamber2, .chamber3 {
+      padding: 5px;
+    }
+}
+
+/* Landscape */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+    .backImage {
+      display: inline;
+    }
+}
+
+/* ----------- iPhone 6, 6S, 7 and 8 ----------- */
+
+/* Portrait and Landscape */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .backImage {
+      display: inline;
+    }
+    div.chamberImage {
+        max-height: 300px;
+    }
+
+    .directions.left ul {
+        padding-left: 10px;
+    }
+
+    .directions.left li {
+        padding-top: 5px;
+    }
+
+}
+
+/* Portrait */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    .backImage {
+      display: inline;
+    }
+    /* Filter Nav By Chamber */
+    /*************************/
+    div.filter.row {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+    .filterById {
+      /* max-width: 150px; */
+    }
+    button.btn.btn-default {
+      padding: 5px;
+    }
+    .chamber1, .chamber2, .chamber3 {
+      padding: 5px;
+    }
+
+    .appContainer {
+        width: auto;
+    }
+
+    .navItem {
+        width: 75px;
+        height: 75px;
+        font-size: 14px;
+    }
+    .navItem li {
+        padding: 2px;
+
+    }
+}
+
+/* Landscape */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+    .backImage {
+      display: inline;
+    }
+}
+
+/* ----------- iPhone 6+, 7+ and 8+ ----------- */
+
+/* Portrait and Landscape */
+@media only screen
+  and (min-device-width: 414px)
+  and (max-device-width: 736px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+    .backImage {
+      display: inline;
+    }
+}
+
+/* Portrait */
+@media only screen
+  and (min-device-width: 414px)
+  and (max-device-width: 736px)
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait) {
+    .backImage {
+      display: inline;
+    }
+    /* Filter Nav By Chamber */
+    /*************************/
+
+}
+
+/* Landscape */
+@media only screen
+  and (min-device-width: 414px)
+  and (max-device-width: 736px)
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: landscape) {
+
+}
+
+/* ----------- iPhone X ----------- */
+
+/* Portrait and Landscape */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3) {
+    .backImage {
+      display: inline;
+    }
+}
+
+/* Portrait */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait) {
+    .backImage {
+      display: inline;
+    }
+    /* Filter Nav By Chamber */
+    /*************************/
+
+}
+
+/* Landscape */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: landscape) {
+
+}
