@@ -10,6 +10,7 @@ import App from './app.react';
 import Homepage from './Homepage.react';
 import Auth from '../Auth/Auth';
 import Tutorials from './tutorials.react';
+import Login from './login/login.react';
 
 const auth = new Auth();
 
@@ -25,6 +26,7 @@ export const makeMainRoutes = () => { // eslint-disable-line
       <main>
           <Route path="/" render={(props) => <App auth={auth} {...props} />}  />
           <Route path="/home" render={(props) => <Homepage auth={auth} {...props} />}  />
+          <Route path="/login" render={(props) => <Login {...props} />} />
           <Route path="/monitor" render={(props) => <MonitorSubLayout auth={auth} {...props} />} />
           <Route path="/plants" render={(props) => <PlantsSubLayout auth={auth} {...props} />} />
           <Route path="/controls" render={(props) => <ControlSubLayout auth={auth} {...props} />} />

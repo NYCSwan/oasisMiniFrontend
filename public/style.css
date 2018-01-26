@@ -10,7 +10,7 @@ h1, h2, h3, h4 {
   font-weight: bold;
 }
 
-#app {
+body {
   background-image: url(/public/img/BG_12_23.jpg);
   background-size: cover;
 	background-repeat: no-repeat;
@@ -734,6 +734,19 @@ li.next a, li.previous a {
   background-color: transparent;
   border:none;
 }
+
+/* Login */
+@media all and (min-width: 480px) {
+  .Login {
+    padding: 60px 0;
+  }
+
+  .Login form {
+    margin: 0 auto;
+    max-width: 320px;
+  }
+}
+
 /*smaller screen responsive*/
 /****************************/
 /*@media only screen and (min-width: 808px) and (max-width: 1320px) {

@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "airbnb",
+    "prettier",
+    "prettier/react",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": [
+    "lodash",
+    "prettier",
+    "import",
+    "jsx-a11y"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2016,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "allowTaggedTemplates": 0,
+    "no-debugger": 0,
+    "no-console": 0,
+    "no-lone-blocks": 0,
+    "no-unused-expressions": 0
+  }
+}

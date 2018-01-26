@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavItem} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import 'babel-polyfill';
 
 import PagerBack from './pagerBack.react';
 
@@ -48,7 +49,7 @@ class App extends Component {
          <Navbar inverse collapseOnSelect fluid className="container-fluid">
            <Navbar.Header>
                  <Navbar.Brand className={`brandLogo ${match.path}`} id="navbarbrand">
-                   <Link to="/" className="logo img-responsive center-block" />
+                   <Link to="/" href="/" className="logo img-responsive center-block" />
                     <div className='backImage'>
                       <PagerBack
                         className="header"/>
@@ -66,38 +67,20 @@ class App extends Component {
            </Navbar.Collapse>
            <h1 className="title Futura-Lig">title</h1>
            <Nav pullRight>
-             {
-               !isAuthenticated() && (
-                   <NavItem
-                     id="qsLoginBtn"
-                     bsStyle="primary"
-                     className="btn-margin"
-                     onClick={this.login}
-                   >
-                     Log In
-                   </NavItem>
-                   <NavItem
-                     id="qsLoginBtn"
-                     bsStyle="primary"
-                     className="btn-margin"
-                     onClick={this.login}
-                   >
-                     Sign Up
-                   </NavItem>
-                 )
-             }
-             {
-               isAuthenticated() && (
-                   <NavItem
-                     id="qsLogoutBtn"
-                     bsStyle="primary"
-                     className="btn-margin"
-                     onClick={this.logout}
-                   >
-                     Log Out
-                   </NavItem>
-                 )
-             }
+             <NavItem
+               href="/login">
+               Log In
+             </NavItem>
+             <NavItem
+               href="/signup">
+               Sign Up
+             </NavItem>
+
+             <NavItem
+               href="/logout">
+               Log Out
+             </NavItem>
+              
            </Nav>
          </Navbar>
          </div>
