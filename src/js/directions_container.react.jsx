@@ -9,16 +9,15 @@ class DirectionsContainer extends Component {
     match: PropTypes.shape({
       params: PropTypes.object
     }).isRequired
-  }
+  };
 
   state = {
     // selectedPlant:
-
-  }
+  };
 
   render() {
     return (
-    <div className="directions container">
+      <div className="directions container">
         <Directions
           settings={this.state.settings}
           directions={this.state.directions}
@@ -27,27 +26,17 @@ class DirectionsContainer extends Component {
           isBalanced={this.state.isBalanced}
         />
 
-      { (this.state.isBalanced === true)
-        ?
-        <Button
-          onClick={this.showGrowDirections}>Next</Button>
-        :
-        null
-      }
-      { (this.state.showGrowDirections === true)
-        ?
-        <PlantingDirections
-          directions={this.state.directions}
-          isBalanced={this.state.isBalanced}
-          handleClick={this.submitGrowChange}
-          settings={this.state.settings}
-        />
-        :
-        null
-      }
-
-    </div>
-    )
+        {this.state.isBalanced === true ? <Button onClick={this.showGrowDirections}>Next</Button> : null}
+        {this.state.showGrowDirections === true ? (
+          <PlantingDirections
+            directions={this.state.directions}
+            isBalanced={this.state.isBalanced}
+            handleClick={this.submitGrowChange}
+            settings={this.state.settings}
+          />
+        ) : null}
+      </div>
+    );
   }
 }
 

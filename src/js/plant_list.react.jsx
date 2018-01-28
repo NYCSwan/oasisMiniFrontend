@@ -9,60 +9,57 @@ class PlantList extends Component {
     match: PropTypes.shape({
       params: PropTypes.object
     }).isRequired
-  //   auth: PropTypes.shape({
-  //     isAuthenticated: PropTypes.func,
-  //     auth0: PropTypes.object
-  //   }).isRequired
-  }
+    //   auth: PropTypes.shape({
+    //     isAuthenticated: PropTypes.func,
+    //     auth0: PropTypes.object
+    //   }).isRequired
+  };
 
   state = {
     plantTypes: []
-  }
+  };
 
   componentDidMount() {
     this.getPlantRecipes();
   }
 
   shouldComponentUpdate(newState, newProps) {
-    return this.state.plantTypes !== newState.plantTypes || this.props.match !== newProps.match
+    return this.state.plantTypes !== newState.plantTypes || this.props.match !== newProps.match;
   }
 
   getPlantRecipes = () => {
     console.log('get plant recipes, plant List');
 
-    getPlantRecipeData().then((plantRecipes) => {
-    console.log(plantRecipes);
-    this.setState({ plantTypes: plantRecipes });
+    getPlantRecipeData().then(plantRecipes => {
+      console.log(plantRecipes);
+      this.setState({ plantTypes: plantRecipes });
     });
-  }
+  };
 
   render() {
     console.log('render plant list');
     const { plantTypes } = this.state;
     return (
-
       <div>
-        <div className='plantList'>
+        <div className="plantList">
           <Grid>
-            {plantTypes.map(plant => { // eslint-disable-line
-               return (
+            {plantTypes.map(plant => {
+              // eslint-disable-line
+              return (
                 <Row key={plant.r_id}>
                   <Col>
-                    <a href={`plants/${plant.r_id}`}>
-                      {plant.name}
-                    </a>
+                    <a href={`plants/${plant.r_id}`}>{plant.name}</a>
                   </Col>
                   <Col>{plant.days_to_maturity}</Col>
                   <Col>{plant.yield}</Col>
                 </Row>
-            )
+              );
             })}
           </Grid>
         </div>
       </div>
-    )
+    );
   }
-
 }
 
 export default PlantList;

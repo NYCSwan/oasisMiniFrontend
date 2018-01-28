@@ -1,40 +1,28 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
-
-import history from './history';
+import { Switch, Route } from 'react-router-dom';
 import MonitorSubLayout from './monitor_sublayout.react';
 import ControlSubLayout from './control_sublayout.react';
 import PlantsSubLayout from './plants_sublayout.react';
-import Callback from '../Callback/Callback.react';
-import App from './app.react';
+import AppliedRoute from './applied_routes';
 import Homepage from './Homepage.react';
-import Auth from '../Auth/Auth';
 import Tutorials from './tutorials.react';
 import Login from './login/login.react';
+import NotFound from './helpers/not_found.react';
 
-const auth = new Auth();
+export default ({childProps}) =>
+  <Switch>
+    <AppliedRoute path="/" exact component={Homepage} props={childProps} />
+    <AppliedRoute path='/login' exact component={Login} props={childProps} />
+    <AppliedRoute path='/monitor' exact component={MonitorSubLayout} props={childProps} />
+    <AppliedRoute path='/controls' exact component={ControlSubLayout} props={childProps} />
+    <AppliedRoute path='/tutorials' exact component={Tutorials} props={childProps} />
+    <AppliedRoute path='/plants' exact component={PlantsSubLayout} props={childProps} />
+    <Route component={NotFound} />
+  </Switch>;
 
-const handleAuthentication = ({location}) => {
-  if (/access_token|id_token|error/.test(location.hash)) {
-    auth.handleAuthentication();
-  }
-}
-
-export const makeMainRoutes = () => { // eslint-disable-line
-  return ( // eslint-disable-line
-    <Router history={history} >
-      <main>
-          <Route path="/" render={(props) => <App auth={auth} {...props} />}  />
-          <Route path="/home" render={(props) => <Homepage auth={auth} {...props} />}  />
-          <Route path="/login" render={(props) => <Login {...props} />} />
-          <Route path="/monitor" render={(props) => <MonitorSubLayout auth={auth} {...props} />} />
-          <Route path="/plants" render={(props) => <PlantsSubLayout auth={auth} {...props} />} />
-          <Route path="/controls" render={(props) => <ControlSubLayout auth={auth} {...props} />} />
-          <Route path="/tutorials" render={(props) => <Tutorials auth={auth} {...props} />} />
-          <Route path="/callback" render={(props) => {
-                      handleAuthentication(props);
-                      return <Callback {...props} /> }} />
-      </main>
-    </Router>
-  )
-}
+// Routes.propTypes = {
+//   match: PropTypes.shape({
+//     path: PropTypes.string
+//   }).isRequired
+// };
+// export default Routes;

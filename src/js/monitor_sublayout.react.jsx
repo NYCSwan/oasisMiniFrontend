@@ -6,19 +6,20 @@ import Monitor from './monitor.react';
 import Sensor from './sensor.react';
 import Progress from './progress.react';
 
-const MonitorSubLayout = (props) => (
+const MonitorSubLayout = props => (
   <div className="monitor-sub-layout">
-      <Switch>
-        <Route path='/monitor' exact component={Monitor} />
-        <Route path={`${props.match.path}/progress`} component={Progress} />
-        <Route path={`${props.match.path}/:sensor_id`} component={Sensor} />
-      </Switch>
+    <Switch>
+      <Route path="/monitor" exact component={Monitor} />
+      <Route path={`${props.match.path}/progress`} component={Progress} />
+      <Route path={`${props.match.path}/:sensor_id`} component={Sensor} />
+    </Switch>
   </div>
-)
+);
 
 MonitorSubLayout.propTypes = {
   match: PropTypes.shape({
-    path: PropTypes.string}).isRequired
-}
+    path: PropTypes.string
+  }).isRequired
+};
 
 export default MonitorSubLayout;

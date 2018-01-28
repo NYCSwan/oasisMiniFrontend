@@ -9,13 +9,20 @@ import pickBy from 'lodash/pickBy';
 import { Col, Row, Button } from 'react-bootstrap';
 
 import FilterButtonGroup from './filter_button.react';
-import { getAllSensorMeasurementsChamber1, getAllSensorMeasurementsChamber3, getAllSensorMeasurementsChamber2, getGrowingPlants, getChamberData } from '../utils/api_calls';
+import {
+  getAllSensorMeasurementsChamber1,
+  getAllSensorMeasurementsChamber3,
+  getAllSensorMeasurementsChamber2,
+  getGrowingPlants,
+  getChamberData
+} from '../utils/api_calls';
 
 class Monitor extends Component {
   static propTypes = {
     match: PropTypes.shape({
-      path: PropTypes.string}).isRequired
-  }
+      path: PropTypes.string
+    }).isRequired
+  };
 
   state = {
     chamberId: 1,
@@ -24,16 +31,20 @@ class Monitor extends Component {
     chambers: []
   };
 
-  componentDidMount(){
+  componentDidMount() {
     console.log('componentDidMount monitor');
     this.getSensorMeasurementData();
     this.getGrowingPlantsData();
     this.getAllChamberData();
   }
 
-  shouldComponentUpdate (newState) {
+  shouldComponentUpdate(newState) {
     console.log('shouldComponentUpdate monitor');
-    return this.state.chamberId !== newState.chamberId || this.state.chamberData !== newState.chamberData || this.state.growingPlants !== newState.growingPlants
+    return (
+      this.state.chamberId !== newState.chamberId ||
+      this.state.chamberData !== newState.chamberData ||
+      this.state.growingPlants !== newState.growingPlants
+    );
   }
 
   // componentDidUpdate(newState) {
@@ -49,138 +60,134 @@ class Monitor extends Component {
   getGrowingPlantsData = () => {
     console.log('get growing plant data- sensor measurement data');
 
-    getGrowingPlants().then((plants) => {
+    getGrowingPlants().then(plants => {
       this.setState({ growingPlants: plants });
     });
-  }
+  };
 
   getAllChamberData = () => {
     console.log('get chamber info');
 
-    getChamberData().then((chambers) => {
+    getChamberData().then(chambers => {
       this.setState({ chambers });
-    })
-  }
+    });
+  };
 
   getSensorMeasurementData = () => {
     console.log('get sensor measurents by chamber id');
     const { chamberId } = this.state;
-// debugger
+    // debugger
     if (chamberId === 1) {
-      getAllSensorMeasurementsChamber1().then((sensorMeasurements) => {
+      getAllSensorMeasurementsChamber1().then(sensorMeasurements => {
         this.setState({ chamberData: sensorMeasurements });
         return sensorMeasurements;
-      })
+      });
     } else if (chamberId === 2) {
-      getAllSensorMeasurementsChamber2.then((sensorMeasurements) => {
+      getAllSensorMeasurementsChamber2.then(sensorMeasurements => {
         this.setState({ chamberData: sensorMeasurements });
         return sensorMeasurements;
-
-      })
+      });
     } else {
-      getAllSensorMeasurementsChamber3.then((sensorMeasurements) => {
+      getAllSensorMeasurementsChamber3.then(sensorMeasurements => {
         this.setState({ chamberData: sensorMeasurements });
         return sensorMeasurements;
-
-      })
+      });
     }
-  }
+  };
 
-  handleChamberIdChange = (newChamber) => {
+  handleChamberIdChange = newChamber => {
     console.log('handleChamberIdChange');
     console.log(newChamber);
-    let tempChamber = ''
+    let tempChamber = '';
     if (newChamber != null) {
       tempChamber = newChamber.target.value;
-      this.setState({
-        chamberId: tempChamber
-      }, ()=>console.log(`chamberId ${this.state.chamberId}`))
+      this.setState(
+        {
+          chamberId: tempChamber
+        },
+        () => console.log(`chamberId ${this.state.chamberId}`)
+      );
     }
-  }
+  };
 
   render() {
-    console.log('render monitor')
+    console.log('render monitor');
     const { chamberData, chamberId, growingPlants } = this.state;
     const currentPlantDataByChamber = [];
 
-    forIn(chamberData, (reading) => {
+    forIn(chamberData, reading => {
       if (reading.chamber_id === chamberId) {
         currentPlantDataByChamber.push(reading);
       }
       return currentPlantDataByChamber;
     });
 
-    const phReadingIdx = findLastIndex(currentPlantDataByChamber, (data) => data.sensor_id === 3);
-    const ppmReadingIdx = findLastIndex(currentPlantDataByChamber, (data) => data.sensor_id === 4);
-    const temperatureReadingIdx = findLastIndex(currentPlantDataByChamber, (data) =>  data.sensor_id === 2);
-    const humidityReadingIdx = findLastIndex(currentPlantDataByChamber, (data) => data.sensor_id === 1);
+    const phReadingIdx = findLastIndex(currentPlantDataByChamber, data => data.sensor_id === 3);
+    const ppmReadingIdx = findLastIndex(currentPlantDataByChamber, data => data.sensor_id === 4);
+    const temperatureReadingIdx = findLastIndex(currentPlantDataByChamber, data => data.sensor_id === 2);
+    const humidityReadingIdx = findLastIndex(currentPlantDataByChamber, data => data.sensor_id === 1);
     //
-    const currentPlantInfo = pickBy(growingPlants, (plant) => plant.chamber_id === chamberId);
+    const currentPlantInfo = pickBy(growingPlants, plant => plant.chamber_id === chamberId);
     const plantKey = findKey(currentPlantInfo);
     const now = new Date().getTime();
     let dayOfCycle = 1;
 
-    if (isEmpty(currentPlantInfo)=== false) {
+    if (isEmpty(currentPlantInfo) === false) {
       const startedOn = Date.parse(currentPlantInfo[plantKey].started_datetime);
       dayOfCycle = new Date(now - startedOn).getDate();
     }
 
     return (
       <div className="monitor container">
-
         <FilterButtonGroup
           onChange={this.handleChamberIdChange}
           chamberId={this.state.chamberId}
-          options={this.state.chambers} />
+          options={this.state.chambers}
+        />
 
-        { (this.state.chamberData.length >= 1)
-        ?
-        <Row className="readings">
-          <Col className="bubble ph" xs={12} md={10} mdOffset={2}>
-            <a href={`${this.props.match.path}/ph`}>
-              <h2 className="xBigFont" key={currentPlantDataByChamber[phReadingIdx].time}>
-                {currentPlantDataByChamber[phReadingIdx].value}
-              </h2>
-              <h4>pH</h4>
+        {this.state.chamberData.length >= 1 ? (
+          <Row className="readings">
+            <Col className="bubble ph" xs={12} md={10} mdOffset={2}>
+              <a href={`${this.props.match.path}/ph`}>
+                <h2 className="xBigFont" key={currentPlantDataByChamber[phReadingIdx].time}>
+                  {currentPlantDataByChamber[phReadingIdx].value}
+                </h2>
+                <h4>pH</h4>
+              </a>
+            </Col>
+            <Col className="bubble empty small" />
+            <Col className="bubble ppm" xs={6} xsOffset={6} md={6}>
+              <a href={`${this.props.match.path}/ppm`}>
+                <h2 className="xBigFont">{currentPlantDataByChamber[ppmReadingIdx].value}</h2>
+                <h4>PPM</h4>
+              </a>
+            </Col>
+            <Col className="bubble temperature" xs={4} md={4} mdOffset={8} xsOffset={8}>
+              <a href={`${this.props.match.path}/temperature`}>
+                <h2 className="xBigFont">{currentPlantDataByChamber[temperatureReadingIdx].value}*</h2>
+                <h4>F</h4>
+              </a>
+            </Col>
+            <Col className="bubble empty md" />
+            <Col className="bubble empty small" />
+            <Col className="bubble humidity" xs={8} md={8} xsOffset={4} mdOffset={4}>
+              <a href={`${this.props.match.path}/humidity`}>
+                <h2 className="xBigFont">{currentPlantDataByChamber[humidityReadingIdx].value}%</h2>
+                <h4>RH</h4>
+              </a>
+            </Col>
+            <Col className="bubble dayOfCycle" xs={3} md={3}>
+              <h4 className="xBigFont">Day {dayOfCycle}</h4>
+            </Col>
+          </Row>
+        ) : (
+          <div>
+            <h2>Sorry. You are not growing anything in this chamber right now.</h2>
+            <a href="controls/newgrow" alt="grow something in this chamber">
+              <Button>Start New Garden</Button>
             </a>
-          </Col>
-          <Col className="bubble empty small" />
-          <Col className="bubble ppm" xs={6} xsOffset={6} md={6}>
-            <a href={`${this.props.match.path}/ppm`}>
-              <h2 className="xBigFont">
-                {currentPlantDataByChamber[ppmReadingIdx].value}
-              </h2>
-              <h4>PPM</h4>
-            </a>
-          </Col>
-          <Col className="bubble temperature" xs={4} md={4} mdOffset={8} xsOffset={8}>
-            <a href={`${this.props.match.path}/temperature`}>
-              <h2 className="xBigFont">{currentPlantDataByChamber[temperatureReadingIdx].value}*</h2>
-              <h4>F</h4>
-            </a>
-          </Col>
-          <Col className="bubble empty md" />
-          <Col className="bubble empty small" />
-          <Col className="bubble humidity" xs={8} md={8} xsOffset={4} mdOffset={4}>
-            <a href={`${this.props.match.path}/humidity`}>
-              <h2 className="xBigFont">
-                {currentPlantDataByChamber[humidityReadingIdx].value}%
-              </h2>
-              <h4>RH</h4>
-            </a>
-          </Col>
-          <Col className="bubble dayOfCycle" xs={3} md={3}>
-            <h4 className="xBigFont">Day {dayOfCycle}</h4>
-          </Col>
-        </Row>
-        :
-        <div>
-          <h2>Sorry. You are not growing anything in this chamber right now.</h2>
-          <a href="controls/newgrow" alt="grow something in this chamber">
-            <Button>Start New Garden</Button>
-          </a>
-        </div>
-        }
+          </div>
+        )}
       </div>
     );
   }

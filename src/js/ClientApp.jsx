@@ -1,17 +1,15 @@
 import React from 'react'; // eslint-disable-line
-import { render } from 'react-dom';
-import { makeMainRoutes } from './routes';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import App from './app.react';
+import registerServiceWorker from './../../registerServiceWorker';
+// import history from './history';
 
-const routes = makeMainRoutes();
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById('app')
+);
 
-const renderApp = () => {
-  render(routes, document.getElementById('app'));
-}
-
-renderApp();
-
-if (module.hot) {
-  module.hot.accept('./routes', () => {
-    renderApp();
-  });
-}
+registerServiceWorker();

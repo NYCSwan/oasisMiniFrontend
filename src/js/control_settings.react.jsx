@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import GrowContainer from './grow_container.react';
@@ -9,27 +9,18 @@ class ControlSettings extends Component {
       params: PropTypes.object,
       path: PropTypes.string
     }).isRequired
-  }
+  };
 
   state = {
     showGrowOptions: true
-  }
+  };
 
   shouldComponentUpdate(newState) {
-    return this.state.showGrowOptions !== newState.showGrowOptions || this.state.showMonitor !== newState.showMonitor
+    return this.state.showGrowOptions !== newState.showGrowOptions || this.state.showMonitor !== newState.showMonitor;
   }
 
   render() {
-    return (
-      <div>
-      { (this.state.showGrowOptions === true)
-        ?
-        <GrowContainer {...this.props}/>
-        :
-        null
-      }
-      </div>
-    )
+    return <div>{this.state.showGrowOptions === true ? <GrowContainer {...this.props} /> : null}</div>;
   }
 }
 

@@ -12,23 +12,23 @@ class PlantingDirections extends Component {
     handleClick: PropTypes.func.isRequired,
     selectedChamber: PropTypes.string.isRequired,
     isBalanced: PropTypes.bool.isRequired
-
-  }
+  };
   // state = {
   //   displaySettings: []
   // }
 
   shouldComponentUpdate(newProps) {
-     this.props.newGrowPlant !== newProps.newGrowPlant || this.props.climates !== newProps.climates || this.props.isBalanced !== newProps.isBalanced
+    this.props.newGrowPlant !== newProps.newGrowPlant ||
+      this.props.climates !== newProps.climates ||
+      this.props.isBalanced !== newProps.isBalanced;
   }
 
   handleClick = () => {
     console.log('handle click planting directions');
-    this.props.handleClick()
+    this.props.handleClick();
     // send message to Plant page saying "Garden started!"
     // send new grow to db, fill chamber
-
-  }
+  };
 
   render() {
     console.log('render directions');
@@ -38,25 +38,24 @@ class PlantingDirections extends Component {
     const growingDirections = newGrowPlant[plantKey].planting_directions;
     return (
       <div className="directions container">
-      <SettingsList
-        chamber={selectedChamber}
-        climates={climates}
-        newGrowPlant={newGrowPlant} />
+        <SettingsList chamber={selectedChamber} climates={climates} newGrowPlant={newGrowPlant} />
         <div className="directions right" pullRight>
           <Grid>
-              <Row key="growingDirections">
-              <Col className="Futura-Lig" xs={5} md={6}> {growingDirections}</Col>
-              </Row>
+            <Row key="growingDirections">
+              <Col className="Futura-Lig" xs={5} md={6}>
+                {' '}
+                {growingDirections}
+              </Col>
+            </Row>
           </Grid>
           <a href={`/plants/${newGrowPlant[plantKey].r_id}`} alt="Start Growing!">
-            <Button
-            className="balanced Futura-Lig" onClick={this.handleClick}>
+            <Button className="balanced Futura-Lig" onClick={this.handleClick}>
               Start Growing!
             </Button>
           </a>
         </div>
       </div>
-    )
+    );
   }
 }
 

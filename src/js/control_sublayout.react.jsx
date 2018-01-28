@@ -6,19 +6,18 @@ import NewGrow from './new_grow.react';
 import ExistingGrow from './existing_grow.react';
 import ControlSettings from './control_settings.react';
 
-const ControlSubLayout = ({match}) => (
+const ControlSubLayout = ({ match }) => (
   <div className="monitor-sub-layout">
-      <Switch>
-        <Route path='/controls' exact component={ControlSettings} />
-        <Route path={`${match.path}/newgrow`} component={NewGrow} />
-        <Route path={`${match.path}/existinggrow`} component={ExistingGrow} />
-
-      </Switch>
+    <Switch>
+      <Route path="/controls" exact component={ControlSettings} />
+      <Route path={`${match.path}/newgrow`} component={NewGrow} />
+      <Route path={`${match.path}/existinggrow`} component={ExistingGrow} />
+    </Switch>
   </div>
-)
+);
 
 ControlSubLayout.propTypes = {
   match: PropTypes.arrayOf(PropTypes.object).isRequired
-}
+};
 
 export default ControlSubLayout;

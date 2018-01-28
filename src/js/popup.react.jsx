@@ -8,17 +8,17 @@ class PopUp extends Component {
     modalTitle: PropTypes.string.isRequired,
     modalBody: PropTypes.element.isRequired,
     buttonText1: PropTypes.string.isRequired,
-    buttonText2: PropTypes.string.isRequired,
+    buttonText2: PropTypes.string.isRequired
     // handleClick: PropTypes.func.isRequired
-  }
+  };
 
   state = {
     showModal: this.props.displayModal
-  }
+  };
 
   shouldComponentUpdate(newProps, newState) {
     console.log('shouldComponentUpdate existing grow');
-    return this.state.showModal !== newState.showModal || this.props.displayModal !== newProps.displayModal
+    return this.state.showModal !== newState.showModal || this.props.displayModal !== newProps.displayModal;
   }
 
   componentDidUpdate() {
@@ -30,19 +30,19 @@ class PopUp extends Component {
     console.log('update modal display');
     console.log(nextProps, nextState);
     // debugger
-    this.setState({ showModal: !this.state.showModal })
-  }
+    this.setState({ showModal: !this.state.showModal });
+  };
 
   close = () => {
     console.log('close popup');
     // debugger
     this.setState({ showModal: false });
-  }
+  };
 
   open = () => {
     console.log('open popup');
     this.setState({ showModal: true });
-  }
+  };
 
   render() {
     console.log('render popup');
@@ -50,27 +50,29 @@ class PopUp extends Component {
     // console.log(!this.state.showModal);
     // debugger
     return (
-      <div className='modal-container'>
+      <div className="modal-container">
         <Button
-          bsStyle='primary'
+          bsStyle="primary"
           bsSize="large"
           className={`${buttonText1} center-block`}
           onClick={this.open}
-          disabled={this.state.showModal}>{buttonText1}</Button>
-        <Modal
-          show={this.state.showModal}
-          onHide={this.close}>
+          disabled={this.state.showModal}
+        >
+          {buttonText1}
+        </Button>
+        <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title>{modalTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {modalBody}
-            <Button
-              className={`close ${buttonText2}`} onClick={this.close}>{buttonText2}</Button>
+            <Button className={`close ${buttonText2}`} onClick={this.close}>
+              {buttonText2}
+            </Button>
           </Modal.Body>
         </Modal>
       </div>
-    )
+    );
   }
 }
 
