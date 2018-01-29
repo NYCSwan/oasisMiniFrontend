@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import 'babel-polyfill';
 
 import RouteNavItem from './components/RouteNavItem.react';
 import PagerBack from './pagerBack.react';
 import Routes from './routes';
+import { authUser, signOutUser } from "../libs/awsLibs";
 
 class App extends Component {
   static propTypes = {
@@ -21,7 +22,21 @@ class App extends Component {
   };
 
   state = {
-    isAuthenticated: false
+    isAuthenticated: false,
+    isAuthenticating: true
+  }
+
+  async componentDidMount() {
+    try {
+      if (await authUser()) {
+        this.userHasAuthenticated(true);
+      }
+    }
+    catch(e) {
+      alert(e);
+    }
+
+    this.setState({ isAuthenticating: false, });
   }
 
   userHasAuthenticated = (authenticated) => {
@@ -34,6 +49,8 @@ class App extends Component {
 
   handleLogout = event => {
     this.userHasAuthenticated(false);
+    this.props.history.push("/login");
+
   }
 
   render() {
@@ -43,6 +60,7 @@ class App extends Component {
       userHasAuthenticated: this.userHasAuthenticated
     };
     return (
+      !this.state.isAuthenticating &&
       <div>
         <Navbar inverse collapseOnSelect fluid className="container-fluid">
           <Navbar.Header>
@@ -82,12 +100,12 @@ class App extends Component {
                   Login
                 </RouteNavItem>
               ]}
-          </Nav>
-        </Navbar>
-        <Routes childProps={childProps} {...this.props} />
+            </Nav>
+          </Navbar>
+        <Routes childProps={childProps} />
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

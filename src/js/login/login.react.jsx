@@ -47,6 +47,7 @@ class Login extends Component {
       await this.login(this.state.email, this.state.password);
       console.log('Logged in');
       this.props.userHasAuthenticated(true);
+      this.props.history.push("/");
     } catch (e) {
       console.log(e);
     }
