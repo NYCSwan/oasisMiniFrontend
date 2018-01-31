@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
+import { IndexLinkContainer } from 'react-router-bootstrap';
 import 'babel-polyfill';
 
-import RouteNavItem from './components/RouteNavItem.react';
+// import RouteNavItem from './components/RouteNavItem.react';
 import PagerBack from './pagerBack.react';
 import Routes from './routes';
 import { authUser, signOutUser } from "../libs/awsLibs";
 
 class App extends Component {
   static propTypes = {
-  //   history: PropTypes.shape({
-  //     replace: PropTypes.func,
-  //     length: PropTypes.number,
-  //     action: PropTypes.string
-  //   }).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func
+    }).isRequired,
     match: PropTypes.shape({
       path: PropTypes.string
     }).isRequired
@@ -33,10 +32,10 @@ class App extends Component {
       }
     }
     catch(e) {
-      alert(e);
+      console.log(e);
     }
-
-    this.setState({ isAuthenticating: false, });
+    this.authenticating();
+    // this.setState({ isAuthenticating: false, });
   }
 
   userHasAuthenticated = (authenticated) => {
@@ -47,10 +46,16 @@ class App extends Component {
     console.log(`selected ${eventKey}`);
   }
 
-  handleLogout = event => {
+  handleLogout = ( event ) => {
+    console.log(`handle logout ${event}`);
+    signOutUser();
     this.userHasAuthenticated(false);
     this.props.history.push("/login");
 
+  }
+
+  authenticating = () => {
+    this.setState({ isAuthenticating: false });
   }
 
   render() {
@@ -64,7 +69,7 @@ class App extends Component {
       <div>
         <Navbar inverse collapseOnSelect fluid className="container-fluid">
           <Navbar.Header>
-            <Navbar.Brand className={`brandLogo`} id="navbarbrand">
+            <Navbar.Brand className={`brandLogo ${match.path}`} id="navbarbrand">
               <Link to="/" href="/" className="logo img-responsive center-block" />
               <div className="backImage">
                 <PagerBack className="header" />
@@ -93,12 +98,16 @@ class App extends Component {
           {this.state.isAuthenticated
             ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
             : [
-                <RouteNavItem key={1} href="/signup">
+              <IndexLinkContainer to='/signup'>
+                <NavItem key={1}>
                   Signup
-                </RouteNavItem>,
-                <RouteNavItem key={2} href="/login">
+                </NavItem>
+              </IndexLinkContainer>,
+              <IndexLinkContainer to='/login'>
+                <NavItem key={2}>
                   Login
-                </RouteNavItem>
+                </NavItem>
+              </IndexLinkContainer>
               ]}
             </Nav>
           </Navbar>
@@ -107,5 +116,4 @@ class App extends Component {
     );
   }
 }
-
 export default withRouter(App);

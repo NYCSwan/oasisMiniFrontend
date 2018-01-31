@@ -1,24 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route } from "react-router-dom";
+import PropTypes from 'prop-types';
 
-class AppliedRoute extends Component {
-    render() {
-        const Comp = this.props.component;
-        const childProps = this.props.props;
-        const exact = this.props.exact;
-        const path = this.props.path;
+const AppliedRoute = ( { component: C, props: cProps } ) => (
+  <Route render={props => <C {...props} {...cProps} />} />
+)
 
-        return (
-            <Route path={path} exact={exact} render={(routerProps) => {
-                return (
-                    <Comp {...routerProps} {...childProps}/>
-                    //spread operator is adding all properties of routerProps & childProps to Comp
-                   // i.e. <Comp match={match} location={location} whatever={whatever}>
-                   //this is useful because we cannot predict what gets passed in to childProps, and we probably dont know what is in routerProps because it is a library
-                );
-            }}/>
-        );
-    }
- };
+AppliedRoute.propTypes = {
+  component: PropTypes.string.isRequired,
+  props: PropTypes.bool.isRequired,
+  rest: PropTypes.shape({
+    props: PropTypes.func
+  }).isRequired,
+}
 
 export default AppliedRoute;

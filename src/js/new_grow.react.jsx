@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { form } from 'react-bootstrap';
 import pickBy from 'lodash/pickBy';
+import PropTypes from 'prop-types';
 
+import { invokeApig } from "../libs/awsLibs";
 import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import CustomizeSensors from './customize_sensors.react';
@@ -9,9 +11,15 @@ import PlantFormGroup from './planttype_form_group.react';
 import ChamberFormGroup from './chamber_options_form.react';
 import Directions from './directions.react';
 import PlantingDirections from './planting_directions.react';
-import { getPlantRecipeData, getChamberData, getClimateData, postNewGrowingPlant } from '../utils/api_calls';
+// import { getPlantRecipeData, getChamberData, getClimateData, postNewGrowingPlant } from '../utils/api_calls';
 
 class NewGrow extends Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func
+    }).isRequired
+  }
+
   state = {
     plantTypes: [],
     chamberOptions: [],
@@ -20,6 +28,7 @@ class NewGrow extends Component {
     selectedChamber: '',
     isBalanced: false,
     showDirections: false,
+    isLoading: false,
     newGrowPlant: []
   };
 
@@ -49,35 +58,47 @@ class NewGrow extends Component {
 
   getPlantRecipes = () => {
     console.log('get plant recipes');
+    return invokeApig({ path: '/plantRecipes' });
 
-    getPlantRecipeData().then(plantRecipes => {
-      console.log(plantRecipes);
-      this.setState({ plantTypes: plantRecipes });
-    });
+
+    // getPlantRecipeData().then(plantRecipes => {
+    //   console.log(plantRecipes);
+    //   this.setState({ plantTypes: plantRecipes });
+    // });
   };
 
   getChamberOptions = () => {
     console.log('get chamber options');
+    return invokeApig({ path: '/chambers' });
 
-    getChamberData().then(chamberOptions => {
-      console.log(chamberOptions);
-      this.setState({ chamberOptions });
-    });
+    // getChamberData().then(chamberOptions => {
+    //   console.log(chamberOptions);
+    //   this.setState({ chamberOptions });
+    // });
   };
 
   getClimates = () => {
-    console.log('get chambers');
+    console.log('get climates');
+    return invokeApig({ path: '/climates' });
 
-    getClimateData().then(climates => {
-      console.log(climates);
-      this.setState({ climates });
-    });
+    // getClimateData().then(climates => {
+    //   console.log(climates);
+    //   this.setState({ climates });
+    // });
   };
 
   handlePlantRadioClick = e => {
     console.log(`handlePlantRadioClick: ${e.target.labels[0].innerText}`);
     this.setState({ selectedPlant: e.target.labels[0].innerText });
     this.handleNewPlantSelection(e);
+  };
+
+  handleChamberRadioClick = e => {
+    console.log(`handleChamberRadio: ${e.target.labels[0].innerText}`);
+    this.setState({
+      selectedChamber: e.target.labels[0].innerText
+    });
+    console.log('handel form shoudl have chamber state');
   };
 
   handleNewPlantSelection = e => {
@@ -101,26 +122,40 @@ class NewGrow extends Component {
     this.setState({ showDirections: true });
   };
 
-  handleChamberRadioClick = e => {
-    console.log(`handleChamberRadio: ${e.target.labels[0].innerText}`);
-    this.setState({
-      selectedChamber: e.target.labels[0].innerText
-    });
-    console.log('handel form shoudl have chamber state');
-  };
+  createGarden = (garden) => { // eslint-disable-line
+    return invokeApig({ // eslint-disable-line
+      path: '/gardens',
+      method: "POST",
+      body: garden
+    })
+  }
 
-  submitGrowChange = () => {
-    console.log('submit new grow plant -- device_id hardcoded');
-    window.location = `/plants/${this.state.selectedPlant}`;
+  handleSubmit = async event => {
+    console.log('submit new grow plant');
+    event.preventDefault();
+    this.setState({ isLoading: true });
 
-    const response = {};
-    response.chamber_id = this.state.chamberId;
-    response.plant_recipe_id = this.state.newGrowPlant.r_id;
-    response.climate_id = this.state.newGrowPlant.climate_id;
-    response.device_id = 1;
-    response.user_id = 1;
+    try {
+      await this.createGarden({
+        chamberId: this.state.selectedChamber,
+        plantRecipeId: this.state.newGrowPlant.r_id,
+        climateId: this.state.newGrowPlant.climate_id
+      });
+      this.props.history.push("/monitor");
+    } catch(e) {
+      console.log(e);
+      this.setState({isLoading:false})
+    }
 
-    postNewGrowingPlant(response);
+    // window.location = `/plants/${this.state.selectedPlant}`;
+    // const response = {};
+    // response.chamber_id = this.state.chamberId;
+    // response.plant_recipe_id = this.state.newGrowPlant.r_id;
+    // response.climate_id = this.state.newGrowPlant.climate_id;
+    // response.device_id = 1;
+    // response.user_id = 1;
+    //
+    // postNewGrowingPlant(response);
   };
 
   render() {
@@ -128,6 +163,7 @@ class NewGrow extends Component {
 
     return (
       <div className="newGrow container">
+      { this.state.isLoading &&
         <form className="new_grow_form">
           {this.state.selectedPlant === '' && (
             <div className="selectedPlant">
@@ -139,7 +175,7 @@ class NewGrow extends Component {
           )}
           {this.state.selectedPlant === 'customize' &&
             this.state.selectedChamber === '' && <CustomizeSensors {...this.props} />}
-          {this.state.selectedChamber === '' &&
+          { this.state.selectedChamber === '' &&
             this.state.selectedPlant !== '' &&
             this.state.showDirections === false && (
               <div className="chamberOptions">
@@ -149,14 +185,14 @@ class NewGrow extends Component {
                 <h3 id="chamber" className="directions Futura-Lig">
                   Select A Chamber
                 </h3>
-                //{' '}
                 <a href="/directions" className="btn btn-default">
                   Submit
                 </a>
               </div>
-            )}
+            )
+          }
         </form>
-
+      }
         {this.state.selectedChamber !== '' &&
           this.state.selectedPlant !== '' &&
           this.state.isBalanced === false && (

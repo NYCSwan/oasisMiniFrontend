@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { form, FormGroup, Radio, Button } from 'react-bootstrap';
-import upperFirst from 'lodash/upperFirst';
+import { Button } from 'react-bootstrap';
+// import upperFirst from 'lodash/upperFirst';
 import pickBy from 'lodash/pickBy';
-import findKey from 'lodash/findKey';
+// import findKey from 'lodash/findKey';
 import isEmpty from 'lodash/isEmpty';
 
 import ChamberFormGroup from './chamber_options_form.react';
@@ -11,7 +11,7 @@ import PagerBack from './pagerBack.react';
 import PagerFwd from './pagerFwd.react';
 import Pause from './pause.react';
 import PopUp from './popup.react';
-import { getGrowingPlants, getChamberData, getClimateData } from '../utils/api_calls';
+// import { getGrowingPlants, getChamberData, getClimateData } from '../utils/api_calls';
 
 class ExistingGrow extends Component {
   state = {
@@ -97,7 +97,7 @@ class ExistingGrow extends Component {
   updateExistingPlant = e => {
     console.log('update existing plant existing grow');
     const target = e.target.labels[0].innerText;
-    const tempPlant = parseInt(target.charAt(target.length - 1));
+    const tempPlant = parseInt(target.charAt(target.length - 1), 8);
 
     const currentPlantType = pickBy(this.state.plantTypes, plant => plant.g_id === tempPlant);
     debugger;
@@ -234,7 +234,6 @@ class ExistingGrow extends Component {
             <h3 id="chamber" className="directions Futura-Lig">
               Select A Chamber
             </h3>
-            //{' '}
             <a href="/directions" className="btn btn-default">
               Submit
             </a>
@@ -260,7 +259,7 @@ class ExistingGrow extends Component {
             buttonText1="Submit Chamber"
             buttonText2="Close"
             displayModal={this.state.showInitialPopup}
-            // handleClicke={this.handlePopupClick}
+            handleClick={this.handlePopupClick}
           />
         )}
         {this.state.showPause === true ? <Pause showPause={this.state.showPause} /> : null}

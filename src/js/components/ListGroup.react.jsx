@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 const ListGroupContainer = props => (
   <ul>
-    {props.items.map(item => {
-      // eslint-disable-line
+    {props.items.map(item => { // eslint-disable-line
       return (
         <li key={item} className="Futura-Lig">
           {item}

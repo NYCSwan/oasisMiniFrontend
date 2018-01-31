@@ -17,6 +17,7 @@ const Timelapse = () => (
       >
         Your browser does not support this video.
       </video>
+      <track />
     </ResponsiveEmbed>
   </div>
 );

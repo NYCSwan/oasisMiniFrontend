@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { NavItem } from 'react-bootstrap';
 
-export default props =>
+const RouteNavItem = props => (
   <Route
     path={props.href}
     exact
@@ -11,8 +11,16 @@ export default props =>
       <NavItem
         onClick={e => history.push(e.currentTarget.getAttribute("href"))}
         {...props}
-        active={match ? true : false}
-      >
-        {props.children}
-      </NavItem>}
-  />;
+        active={match}>
+          {props.children}
+      </NavItem>
+    }
+  />
+);
+
+RouteNavItem.propTypes = {
+  children: PropTypes.func.isRequired,
+  href: PropTypes.string.isRequired
+}
+
+export default RouteNavItem;

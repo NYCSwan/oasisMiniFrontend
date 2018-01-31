@@ -22,8 +22,7 @@ class PlantFormGroup extends Component {
 
   render() {
     console.log('render form_group');
-    const radioBtns = this.props.options.map(value => {
-      // eslint-disable-line
+    const radioBtns = this.props.options.map(value => { // eslint-disable-line
       return (
         <Radio
           name={`radioGroup${value.shortname}`}

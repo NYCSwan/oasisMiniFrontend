@@ -1,12 +1,23 @@
 import React from "react";
 import { Button, Glyphicon } from "react-bootstrap";
+import PropTypes from 'prop-types';
 
-export default props =>
+const LoaderButton = props => (
   <Button
     className={`LoaderButton ${props.className}`}
     disabled={props.disabled || props.isLoading}
-    {...props}
-  >
+    {...props}>
     {props.isLoading && <Glyphicon glyph="refresh" className="spinning" />}
     {!props.isLoading ? props.text : props.loadingText}
-  </Button>;
+  </Button>
+)
+
+LoaderButton.propTypes = {
+  className: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+  loadingText: PropTypes.bool.isRequired
+}
+
+export default LoaderButton;

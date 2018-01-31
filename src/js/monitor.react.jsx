@@ -8,20 +8,15 @@ import forIn from 'lodash/forIn';
 import pickBy from 'lodash/pickBy';
 import { Col, Row, Button } from 'react-bootstrap';
 
-import FilterButtonGroup from './filter_button.react';
-import {
-  getAllSensorMeasurementsChamber1,
-  getAllSensorMeasurementsChamber3,
-  getAllSensorMeasurementsChamber2,
-  getGrowingPlants,
-  getChamberData
-} from '../utils/api_calls';
+import FilterButtonGroup from './components/filter_button.react';
+import { invokeApig } from '../libs/awsLibs';
 
 class Monitor extends Component {
   static propTypes = {
     match: PropTypes.shape({
       path: PropTypes.string
-    }).isRequired
+    }).isRequired,
+    isAuthenticated: PropTypes.func.isRequired
   };
 
   state = {
@@ -31,16 +26,28 @@ class Monitor extends Component {
     chambers: []
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log('componentDidMount monitor');
-    this.getSensorMeasurementData();
-    this.getGrowingPlantsData();
-    this.getAllChamberData();
+    if(!this.props.isAuthenticated) {
+      return;
+    }
+    try {
+      const growingResults = await this.growingPlants();
+      const chamberResults = await this.getAllChamberData();
+      const sensorResults = await this.getSensorMeasurementData();
+
+      this.setGrowingPlants(growingResults);
+      this.setChambers(chamberResults);
+      this.setSensorData(sensorResults);
+    } catch(e) {
+      console.log(e);
+    }
+
   }
 
   shouldComponentUpdate(newState) {
     console.log('shouldComponentUpdate monitor');
-    return (
+    return (  // eslint-disable-line
       this.state.chamberId !== newState.chamberId ||
       this.state.chamberData !== newState.chamberData ||
       this.state.growingPlants !== newState.growingPlants
@@ -57,43 +64,47 @@ class Monitor extends Component {
   //   }
   // }
 
-  getGrowingPlantsData = () => {
-    console.log('get growing plant data- sensor measurement data');
-
-    getGrowingPlants().then(plants => {
-      this.setState({ growingPlants: plants });
-    });
-  };
+  // getGrowingPlantsData = () => {
+  //   console.log('get growing plant data- sensor measurement data');
+  //
+  //   getGrowingPlants().then(plants => {
+  //     this.setState({ growingPlants: plants });
+  //   });
+  // };
 
   getAllChamberData = () => {
     console.log('get chamber info');
-
-    getChamberData().then(chambers => {
-      this.setState({ chambers });
-    });
+    return invokeApig({ path: '/chambers' });
   };
 
   getSensorMeasurementData = () => {
     console.log('get sensor measurents by chamber id');
-    const { chamberId } = this.state;
     // debugger
-    if (chamberId === 1) {
-      getAllSensorMeasurementsChamber1().then(sensorMeasurements => {
-        this.setState({ chamberData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (chamberId === 2) {
-      getAllSensorMeasurementsChamber2.then(sensorMeasurements => {
-        this.setState({ chamberData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else {
-      getAllSensorMeasurementsChamber3.then(sensorMeasurements => {
-        this.setState({ chamberData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    }
+      return invokeApig({ path: `/sensorData`})
   };
+
+
+  setGrowingPlants = (growingResults) => {
+    console.log('set growing plants in state');
+    this.setState({ growingPlants: growingResults });
+  }
+
+  setChambers = (chamberResults) => {
+    console.log('set chambers in state');
+
+    this.setState({ chambers: chamberResults });
+  }
+
+  setSensorData = (sensorResults) => {
+    console.log('set sensor data in state');
+
+    this.setState({ chamberData: sensorResults });
+  }
+
+  growingPlants = () => {
+    console.log('get growing plants from db');
+    return invokeApig({ path: "/gardens" });  // eslint-disable-line
+  }
 
   handleChamberIdChange = newChamber => {
     console.log('handleChamberIdChange');

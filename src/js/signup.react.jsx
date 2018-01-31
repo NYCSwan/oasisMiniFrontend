@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import {
   HelpBlock,
   FormGroup,
@@ -10,17 +11,25 @@ import config from "../config";
 import LoaderButton from "./components/LoaderButton.react";
 
 export default class Signup extends Component {
+  static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func
+    }).isRequired,
+    userHasAuthenticated: PropTypes.func.isRequired
+  }
+
   state = {
     isLoading: false,
     email: "",
     password: "",
     confirmPassword: "",
     confirmationCode: "",
+    deviceId: "",
     newUser: null
   };
 
 
-  validateForm = () => {
+  validateForm = () => { // eslint-disable-line
     return (
       this.state.email.length > 0 &&
       this.state.password.length > 0 &&
@@ -28,7 +37,7 @@ export default class Signup extends Component {
     );
   }
 
-  validateConfirmationForm = () => {
+  validateConfirmationForm = () => { // eslint-disable-line
     return this.state.confirmationCode.length > 0;
   }
 
@@ -45,9 +54,9 @@ export default class Signup extends Component {
 
       try {
         const newUser = await this.signup(this.state.email, this.state.password);
-        this.setState({ newUser: newUser });
+        this.setState({ newUser });
       } catch (e) {
-        alert(e);
+        console.log(e);
       }
       this.setState({ isLoading: false });
   }
@@ -68,7 +77,7 @@ export default class Signup extends Component {
         this.props.userHasAuthenticated(true);
         this.props.history.push("/");
       } catch (e) {
-        alert(e);
+        console.log(e);
         this.setState({ isLoading: false });
       }
     }
@@ -80,20 +89,19 @@ export default class Signup extends Component {
     });
 
     return new Promise((resolve, reject) =>
-    userPool.signUp(email, password, [], null, (err, result) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      resolve(result.user);
-      })
+      userPool.signUp(email, password, [], null, (err, result) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(result.user);
+        })
     )
   }
 
-  confirm = (user, confirmationCode) => {
+  confirm = (user, confirmationCode) => { // eslint-disable-line
     return new Promise((resolve, reject) =>
-      user.confirmRegistration(confirmationCode, true, function(err, result) {
+      user.confirmRegistration(confirmationCode, true, function(err, result) { // eslint-disable-line
         if (err) {
           reject(err);
           return;
@@ -110,15 +118,15 @@ export default class Signup extends Component {
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
-    return new Promise((resolve, reject) =>
+    return new Promise((resolve, reject) => // eslint-disable-line
       user.authenticateUser(authenticationDetails, {
-        onSuccess: result => resolve(),
+        onSuccess: result => resolve(), // eslint-disable-line
         onFailure: err => reject(err)
       })
     );
   }
 
-  renderConfirmationForm = () => {
+  renderConfirmationForm = () => { // eslint-disable-line
     return (
       <form onSubmit={this.handleConfirmationSubmit}>
         <FormGroup controlId="confirmationCode" bsSize="large">
@@ -145,7 +153,7 @@ export default class Signup extends Component {
   }
 
 
-  renderForm = () => {
+  renderForm = () => { // eslint-disable-line
     return (
       <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
@@ -160,9 +168,9 @@ export default class Signup extends Component {
         <FormGroup controlId="deviceId" bsSize="large">
         <ControlLabel>Oasis Mini Serial Number</ControlLabel>
         <FormControl
-        value={this.state.deviceId}
-        onChange={this.handleChange}
-        type="text"
+          value={this.state.deviceId}
+          onChange={this.handleChange}
+          type="text"
         />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">

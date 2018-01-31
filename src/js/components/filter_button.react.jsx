@@ -28,8 +28,7 @@ class FilterButtonGroup extends Component {
         md={12}
         lg={12}
       >
-        {this.props.options.map(option => {
-          // eslint-disable-line
+        {this.props.options.map(option => { // eslint-disable-line
 
           return (
             // eslint-disable-line

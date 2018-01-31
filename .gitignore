@@ -8,7 +8,7 @@ coverage/
 .DS_Store
 public/*bundle*
 *.map
-*.bundle.js
+*.bundle.js 
 _site/
 .sass-cache/
 yarn-error.log

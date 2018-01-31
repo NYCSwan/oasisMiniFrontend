@@ -43,8 +43,7 @@ class PlantList extends Component {
       <div>
         <div className="plantList">
           <Grid>
-            {plantTypes.map(plant => {
-              // eslint-disable-line
+            {plantTypes.map(plant => { // eslint-disable-line
               return (
                 <Row key={plant.r_id}>
                   <Col>

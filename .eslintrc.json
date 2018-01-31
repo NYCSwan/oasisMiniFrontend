@@ -31,6 +31,7 @@
     "no-console": 0,
     "no-lone-blocks": 0,
     "no-unused-expressions": 0,
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "jsx-a11y/media-has-caption": "off"
   }
 }

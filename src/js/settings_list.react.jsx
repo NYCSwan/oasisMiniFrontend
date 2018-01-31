@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import findKey from 'lodash/findKey';
 import pickBy from 'lodash/pickBy';
 
-import ListGroupContainer from './ListGroup.react';
+import ListGroupContainer from './components/ListGroup.react';
 
 class SettingsList extends Component {
   static propTypes = {

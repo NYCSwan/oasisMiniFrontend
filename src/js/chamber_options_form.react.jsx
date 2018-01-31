@@ -22,9 +22,7 @@ class ChamberFormGroup extends Component {
 
   render() {
     console.log('render form_group');
-    // debugger
-    const radioBtns = this.props.options.map(value => {
-      // eslint-disable-line
+    const radioBtns = this.props.options.map(value => { // eslint-disable-line
       return (
         <Radio
           name={`radioGroup Chamber${value.c_id}`}

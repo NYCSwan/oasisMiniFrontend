@@ -5,27 +5,9 @@ import findKey from 'lodash/findKey';
 import isEmpty from 'lodash/isEmpty';
 import pickBy from 'lodash/pickBy';
 
+import { invokeApig } from '../libs/awsLibs';
 import LineGraph from '../D3/lineGraph';
-import FilterButtonGroup from './filter_button.react';
-import {
-  getAllSensorMeasurementsPhChamber1,
-  getAllSensorMeasurementsPpmChamber1,
-  getAllSensorMeasurementsHumidityChamber1,
-  getAllSensorMeasurementsTemperatureChamber1,
-  getAllSensorMeasurementsWaterLevelChamber1,
-  getAllSensorMeasurementsPhChamber2,
-  getAllSensorMeasurementsPpmChamber2,
-  getAllSensorMeasurementsHumidityChamber2,
-  getAllSensorMeasurementsTemperatureChamber2,
-  getAllSensorMeasurementsWaterLevelChamber2,
-  getAllSensorMeasurementsPhChamber3,
-  getAllSensorMeasurementsPpmChamber3,
-  getAllSensorMeasurementsHumidityChamber3,
-  getAllSensorMeasurementsTemperatureChamber3,
-  getAllSensorMeasurementsWaterLevelChamber3,
-  getChamberData,
-  getGrowingPlants
-} from '../utils/api_calls';
+import FilterButtonGroup from './components/filter_button.react';
 
 class Sensor extends Component {
   static propTypes = {
@@ -69,7 +51,7 @@ class Sensor extends Component {
   getAllChamberData = () => {
     console.log('get chamber info');
 
-    getChamberData().then(chambers => {
+    invokeApig({ path: '/chambers' }).then(chambers => {
       this.setState({ chambers });
     });
   };
@@ -77,8 +59,8 @@ class Sensor extends Component {
   getGrowingPlantsData = () => {
     console.log('get growing plant data- sensor measurement data');
 
-    getGrowingPlants().then(plants => {
-      this.setState({ growingPlants: plants });
+    invokeApig({ path: '/gardens' }).then(gardens => {
+      this.setState({ growingPlants: gardens });
     });
   };
 
@@ -86,81 +68,70 @@ class Sensor extends Component {
     console.log('get sensor data');
     const { chamberId } = this.state;
     const sensor = this.props.match.url.slice(9);
-    if (sensor === 'temperature' && chamberId === 1) {
-      getAllSensorMeasurementsTemperatureChamber1().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        // return sensorMeasurements;
-      });
-    } else if (sensor === 'temperature' && chamberId === 2) {
-      getAllSensorMeasurementsTemperatureChamber2().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        // return sensorMeasurements;
-      });
-    } else if (sensor === 'temperature' && chamberId === 3) {
-      getAllSensorMeasurementsTemperatureChamber3().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        // return sensorMeasurements;
-      });
-    } else if (sensor === 'humidity' && chamberId === 1) {
-      getAllSensorMeasurementsHumidityChamber1().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        // return sensorMeasurements;
-      });
-    } else if (sensor === 'humidity' && chamberId === 2) {
-      getAllSensorMeasurementsHumidityChamber2().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        // return sensorMeasurements;
-      });
-    } else if (sensor === 'humidity' && chamberId === 3) {
-      getAllSensorMeasurementsHumidityChamber3().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'ph' && chamberId === 1) {
-      getAllSensorMeasurementsPhChamber1().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'ph' && chamberId === 2) {
-      getAllSensorMeasurementsPhChamber2().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'ph' && chamberId === 3) {
-      getAllSensorMeasurementsPhChamber3().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'ppm' && chamberId === 1) {
-      getAllSensorMeasurementsPpmChamber1().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'ppm' && chamberId === 2) {
-      getAllSensorMeasurementsPpmChamber2().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'ppm' && chamberId === 3) {
-      getAllSensorMeasurementsPpmChamber3().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'water' && chamberId === 1) {
-      getAllSensorMeasurementsWaterLevelChamber1().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'water' && chamberId === 2) {
-      getAllSensorMeasurementsWaterLevelChamber2().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
-    } else if (sensor === 'water' && chamberId === 3) {
-      getAllSensorMeasurementsWaterLevelChamber3().then(sensorMeasurements => {
-        this.setState({ sensorData: sensorMeasurements });
-        return sensorMeasurements;
-      });
+    if (sensor !== '') {
+      invokeApig({ path: '/sensorData', chamberId }).then(sensorData => {
+        this.setState({ sensorData });
+      })
+    //     // return sensorMeasurements;
+    //
+    // } else if (sensor === 'temperature' && chamberId === 2) {
+    //   //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     // return sensorMeasurements;
+    //
+    // } else if (sensor === 'temperature' && chamberId === 3) {
+    //   //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     // return sensorMeasurements;
+    //
+    // } else if (sensor === 'humidity' && chamberId === 1) {
+    //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     // return sensorMeasurements;
+    //
+    // } else if (sensor === 'humidity' && chamberId === 2) {
+    //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     // return sensorMeasurements;
+    //
+    // } else if (sensor === 'humidity' && chamberId === 3) {
+    //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //
+    // } else if (sensor === 'ph' && chamberId === 1) {
+    //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    //
+    // } else if (sensor === 'ph' && chamberId === 2) {
+    //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    //
+    // } else if (sensor === 'ph' && chamberId === 3) {
+    //
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    //
+    // } else if (sensor === 'ppm' && chamberId === 1) {
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    //
+    // } else if (sensor === 'ppm' && chamberId === 2) {
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    // } else if (sensor === 'ppm' && chamberId === 3) {
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    // } else if (sensor === 'water' && chamberId === 1) {
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    // } else if (sensor === 'water' && chamberId === 2) {
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
+    // } else if (sensor === 'water' && chamberId === 3) {
+    //     this.setState({ sensorData: sensorMeasurements });
+    //     return sensorMeasurements;
     } else {
       console.error('shit went wrong');
     }
